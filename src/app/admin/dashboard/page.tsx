@@ -1,18 +1,44 @@
-import * as React from "react"
-import DashboardCard from "@/components/admin/DashboardCard"
-import { Box, Tags, ShoppingCart, BarChart2 } from "lucide-react"
+import {
+  Package,
+  Tags,
+  ShoppingCart,
+  DollarSign,
+} from "lucide-react"
 
-export default function AdminDashboardPage() {
+import StatCard from "@/components/dashboard/StatCard"
+
+export default function DashboardPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+    <>
+      <h1 className="mb-6 text-3xl font-bold">
+        Dashboard
+      </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <DashboardCard icon={<Box size={18} />} title="Total Products" value={125} />
-        <DashboardCard icon={<Tags size={18} />} title="Categories" value={8} />
-        <DashboardCard icon={<ShoppingCart size={18} />} title="Orders" value={54} />
-        <DashboardCard icon={<BarChart2 size={18} />} title="Revenue" value="$12,450" />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          title="Products"
+          value="125"
+          icon={<Package className="h-6 w-6" />}
+        />
+
+        <StatCard
+          title="Categories"
+          value="8"
+          icon={<Tags className="h-6 w-6" />}
+        />
+
+        <StatCard
+          title="Orders"
+          value="54"
+          icon={<ShoppingCart className="h-6 w-6" />}
+        />
+
+        <StatCard
+          title="Revenue"
+          value="$12,450"
+          icon={<DollarSign className="h-6 w-6" />}
+        />
       </div>
-    </div>
+    </>
   )
 }
