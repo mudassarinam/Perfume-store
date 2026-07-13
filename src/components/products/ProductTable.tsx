@@ -1,38 +1,19 @@
-"use client"
-
 import { Eye, Pencil, Trash2 } from "lucide-react"
+import { Prisma } from "@prisma/client"
 
-const products = [
-  {
-    id: 1,
-    image: "🧴",
-    name: "J. Janan Platinum",
-    sku: "JAN-001",
-    category: "Men",
-    stock: 42,
-    price: "$45",
-  },
-  {
-    id: 2,
-    image: "🧴",
-    name: "Dior Sauvage",
-    sku: "DIO-002",
-    category: "Luxury",
-    stock: 15,
-    price: "$120",
-  },
-  {
-    id: 3,
-    image: "🧴",
-    name: "Bleu de Chanel",
-    sku: "CHA-003",
-    category: "Luxury",
-    stock: 8,
-    price: "$140",
-  },
-]
+type ProductWithCategory = Prisma.ProductGetPayload<{
+  include: {
+    category: true
+  }
+}>
 
-export default function ProductTable() {
+interface ProductTableProps {
+  products: ProductWithCategory[]
+}
+
+export default function ProductTable({
+  products,
+}: ProductTableProps) {
   return (
     <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
       <table className="w-full">
@@ -54,9 +35,7 @@ export default function ProductTable() {
               key={product.id}
               className="border-t hover:bg-muted/30 transition-colors"
             >
-              <td className="px-4 py-4 text-2xl">
-                {product.image}
-              </td>
+              <td className="px-4 py-4 text-2xl">🧴</td>
 
               <td className="px-4 py-4 font-medium">
                 {product.name}
@@ -67,7 +46,7 @@ export default function ProductTable() {
               </td>
 
               <td className="px-4 py-4">
-                {product.category}
+                {product.category?.name ?? "-"}
               </td>
 
               <td className="px-4 py-4">
@@ -85,7 +64,7 @@ export default function ProductTable() {
               </td>
 
               <td className="px-4 py-4 font-semibold">
-                {product.price}
+                {`$${Number(product.price).toFixed(2)}`}
               </td>
 
               <td className="px-4 py-4">
@@ -107,6 +86,12 @@ export default function ProductTable() {
           ))}
         </tbody>
       </table>
+
+      {products.length === 0 && (
+        <div className="p-10 text-center text-muted-foreground">
+          No products found.
+        </div>
+      )}
     </div>
   )
 }
