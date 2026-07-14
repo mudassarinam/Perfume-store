@@ -1,19 +1,38 @@
 "use client"
 
-export default function ProductForm() {
+import { createProduct } from "@/actions/product"
+import { Brand, Category } from "@prisma/client"
+
+interface ProductFormProps {
+  categories: Category[]
+  brands: Brand[]
+}
+
+export default function ProductForm({
+  categories,
+  brands,
+}: ProductFormProps) {
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
+    <form
+      action={createProduct}
+      className="rounded-xl border bg-card p-6 shadow-sm"
+    >
+      <h2 className="mb-6 text-xl font-semibold">
+        Product Form
+      </h2>
 
-      <div className="grid gap-6 md:grid-cols-2">
-
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <label className="mb-2 block text-sm font-medium">
             Product Name
           </label>
 
           <input
-            className="w-full rounded-lg border px-3 py-2"
-            placeholder="J. Janan Platinum"
+            name="name"
+            type="text"
+            required
+            placeholder="Enter product name"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
@@ -23,79 +42,11 @@ export default function ProductForm() {
           </label>
 
           <input
-            className="w-full rounded-lg border px-3 py-2"
+            name="sku"
+            type="text"
+            required
             placeholder="JAN-001"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Category
-          </label>
-
-          <select className="w-full rounded-lg border px-3 py-2">
-            <option>Men</option>
-            <option>Women</option>
-            <option>Luxury</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Brand
-          </label>
-
-          <select className="w-full rounded-lg border px-3 py-2">
-            <option>J.</option>
-            <option>Dior</option>
-            <option>Chanel</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Status
-          </label>
-
-          <select className="w-full rounded-lg border px-3 py-2">
-            <option>Active</option>
-            <option>Inactive</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Cost Price
-          </label>
-
-          <input
-            type="number"
-            className="w-full rounded-lg border px-3 py-2"
-            placeholder="30"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Selling Price
-          </label>
-
-          <input
-            type="number"
-            className="w-full rounded-lg border px-3 py-2"
-            placeholder="45"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Stock Quantity
-          </label>
-
-          <input
-            type="number"
-            className="w-full rounded-lg border px-3 py-2"
-            placeholder="50"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
@@ -105,71 +56,201 @@ export default function ProductForm() {
           </label>
 
           <input
-            className="w-full rounded-lg border px-3 py-2"
-            placeholder="123456789"
+            name="barcode"
+            type="text"
+            placeholder="Barcode"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
-      </div>
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Category
+          </label>
 
-      <div className="mt-6">
-        <label className="mb-2 block text-sm font-medium">
-          Product Description
-        </label>
+          <select
+            name="categoryId"
+            required
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">Select Category</option>
 
-        <textarea
-          rows={5}
-          className="w-full rounded-lg border p-3"
-          placeholder="Write product description..."
-        />
-      </div>
+            {categories.map((category) => (
+              <option
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="mt-6">
-        <label className="mb-2 block text-sm font-medium">
-          Internal Notes
-        </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Brand
+          </label>
 
-        <textarea
-          rows={3}
-          className="w-full rounded-lg border p-3"
-          placeholder="Only visible to administrators..."
-        />
-      </div>
+          <select
+            name="brandId"
+            required
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">Select Brand</option>
 
-      <div className="mt-6">
-        <label className="mb-2 block text-sm font-medium">
-          Product Name
-          <span className="text-red-500">*</span>
-        </label>
+            {brands.map((brand) => (
+              <option
+                key={brand.id}
+                value={brand.id}
+              >
+                {brand.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <div className="rounded-lg border-2 border-dashed p-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            Drag & Drop an image here
-          </p>
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Gender
+          </label>
 
-          <p className="mt-2 text-xs text-muted-foreground">
-            or click below
-          </p>
+          <select
+            name="gender"
+            required
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="BOTH">Both</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Selling Price
+          </label>
 
           <input
-            type="file"
-            className="mt-4"
+            name="price"
+            type="number"
+            step="0.01"
+            required
+            placeholder="0.00"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Cost Price
+          </label>
+
+          <input
+            name="costPrice"
+            type="number"
+            step="0.01"
+            required
+            placeholder="0.00"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Discount
+          </label>
+
+          <input
+            name="discount"
+            type="number"
+            step="0.01"
+            defaultValue={0}
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Stock
+          </label>
+
+          <input
+            name="stock"
+            type="number"
+            defaultValue={0}
+            required
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            Volume
+          </label>
+
+          <input
+            name="volume"
+            type="text"
+            placeholder="100ml"
+            className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <label className="mb-2 block text-sm font-medium">
+          Description
+        </label>
+
+        <textarea
+          name="description"
+          rows={5}
+          placeholder="Product description..."
+          className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-6">
+        <label className="flex items-center gap-2">
+          <input
+            name="featured"
+            type="checkbox"
+          />
+          Featured
+        </label>
+
+        <label className="flex items-center gap-2">
+          <input
+            name="newArrival"
+            type="checkbox"
+          />
+          New Arrival
+        </label>
+
+        <label className="flex items-center gap-2">
+          <input
+            name="topSeller"
+            type="checkbox"
+          />
+          Top Seller
+        </label>
       </div>
 
       <div className="mt-8 flex justify-end gap-3">
-
-        <button className="rounded-lg border px-5 py-2 hover:bg-muted">
+        <button
+          type="reset"
+          className="rounded-lg border px-5 py-2"
+        >
           Cancel
         </button>
 
-        <button className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">
+        <button
+          type="submit"
+          className="rounded-lg bg-primary px-5 py-2 text-primary-foreground"
+        >
           Save Product
         </button>
-
       </div>
-
-    </div>
+    </form>
   )
 }
