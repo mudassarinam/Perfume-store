@@ -1,22 +1,40 @@
 "use client"
 
-import { createProduct } from "@/actions/product"
-import { Brand, Category } from "@prisma/client"
+import { createProduct, updateProduct } from "@/actions/product"
+import { Brand, Category, Product } from "@prisma/client"
+
+type ProductFormProduct = Omit<
+  Product,
+  "price" | "costPrice" | "discount"
+> & {
+  price: number
+  costPrice: number
+  discount: number
+}
 
 interface ProductFormProps {
   categories: Category[]
   brands: Brand[]
+  product?: ProductFormProduct
 }
 
 export default function ProductForm({
   categories,
   brands,
+  product,
 }: ProductFormProps) {
   return (
     <form
-      action={createProduct}
+       action={product ? updateProduct : createProduct}
       className="rounded-xl border bg-card p-6 shadow-sm"
     >
+    {product && (
+    <input
+      type="hidden"
+      name="id"
+      value={product.id}
+    />
+  )}
       <h2 className="mb-6 text-xl font-semibold">
         Product Form
       </h2>
@@ -31,6 +49,7 @@ export default function ProductForm({
             name="name"
             type="text"
             required
+            defaultValue={product?.name}
             placeholder="Enter product name"
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
@@ -38,7 +57,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            SKU
+            defaultValue={product?.sku}
           </label>
 
           <input
@@ -52,7 +71,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Barcode
+            defaultValue={product?.barcode ?? ""}
           </label>
 
           <input
@@ -71,6 +90,7 @@ export default function ProductForm({
           <select
             name="categoryId"
             required
+            defaultValue={product?.categoryId ?? ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="">Select Category</option>
@@ -94,6 +114,7 @@ export default function ProductForm({
           <select
             name="brandId"
             required
+            defaultValue={product?.brandId ?? ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="">Select Brand</option>
@@ -117,6 +138,7 @@ export default function ProductForm({
           <select
             name="gender"
             required
+            defaultValue={product?.gender}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="MALE">Male</option>
@@ -127,7 +149,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Selling Price
+            defaultValue={product?.price.toString()}
           </label>
 
           <input
@@ -142,7 +164,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Cost Price
+            defaultValue={product?.costPrice.toString()}
           </label>
 
           <input
@@ -164,7 +186,7 @@ export default function ProductForm({
             name="discount"
             type="number"
             step="0.01"
-            defaultValue={0}
+            defaultValue={product?.discount.toString() ?? 0}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
@@ -177,7 +199,7 @@ export default function ProductForm({
           <input
             name="stock"
             type="number"
-            defaultValue={0}
+            defaultValue={product?.stock ?? 0}
             required
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
@@ -185,7 +207,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Volume
+            defaultValue={product?.volume ?? ""}
           </label>
 
           <input
@@ -199,7 +221,7 @@ export default function ProductForm({
 
       <div className="mt-6">
         <label className="mb-2 block text-sm font-medium">
-          Description
+          defaultValue={product?.description ?? ""}
         </label>
 
         <textarea
@@ -215,6 +237,7 @@ export default function ProductForm({
           <input
             name="featured"
             type="checkbox"
+            defaultChecked={product?.featured}
           />
           Featured
         </label>
@@ -223,6 +246,7 @@ export default function ProductForm({
           <input
             name="newArrival"
             type="checkbox"
+            defaultChecked={product?.newArrival}
           />
           New Arrival
         </label>
@@ -231,6 +255,7 @@ export default function ProductForm({
           <input
             name="topSeller"
             type="checkbox"
+            defaultChecked={product?.topSeller}
           />
           Top Seller
         </label>
@@ -248,7 +273,7 @@ export default function ProductForm({
           type="submit"
           className="rounded-lg bg-primary px-5 py-2 text-primary-foreground"
         >
-          Save Product
+         {product ? "Update Product" : "Save Product"}
         </button>
       </div>
     </form>

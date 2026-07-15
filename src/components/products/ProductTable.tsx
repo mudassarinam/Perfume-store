@@ -1,5 +1,6 @@
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { Prisma } from "@prisma/client"
+import Link from "next/link"
 
 type ProductWithCategory = Prisma.ProductGetPayload<{
   include: {
@@ -73,9 +74,12 @@ export default function ProductTable({
                     <Eye size={18} />
                   </button>
 
-                  <button className="rounded-md p-2 hover:bg-yellow-100">
+                  <Link
+                    href={`/admin/products/${product.id}/edit`}
+                    className="rounded-md p-2 hover:bg-yellow-100"
+                  >
                     <Pencil size={18} />
-                  </button>
+                  </Link>
 
                   <button className="rounded-md p-2 hover:bg-red-100">
                     <Trash2 size={18} />
