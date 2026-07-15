@@ -1,11 +1,18 @@
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { Prisma } from "@prisma/client"
 
-type ProductWithCategory = Prisma.ProductGetPayload<{
-  include: {
-    category: true
-  }
-}>
+type ProductWithCategory = Omit<
+  Prisma.ProductGetPayload<{
+    include: {
+      category: true
+    }
+  }>,
+  "price" | "costPrice" | "discount"
+> & {
+  price: number
+  costPrice: number
+  discount: number
+}
 
 interface ProductTableProps {
   products: ProductWithCategory[]

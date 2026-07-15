@@ -15,6 +15,13 @@ export default async function ProductsPage() {
     },
   })
 
+  const serializedProducts = products.map((product) => ({
+    ...product,
+    price: Number(product.price),
+    costPrice: Number(product.costPrice),
+    discount: Number(product.discount),
+  }))
+
   return (
     <>
       <PageHeader
@@ -26,9 +33,9 @@ export default async function ProductsPage() {
 
       <ProductFilters />
 
-      <ProductTable products={products} />
+      <ProductTable products={serializedProducts} />
 
-      <ProductPagination total={products.length} />
+      <ProductPagination total={serializedProducts.length} />
     </>
   )
 }

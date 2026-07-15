@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { productSchema } from "@/lib/validations/product"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 function generateSlug(name: string) {
   return name
@@ -129,4 +130,20 @@ export async function updateProduct(formData: FormData) {
   })
 
   redirect("/admin/products")
+}
+
+export async function deleteProduct(id: number) {
+  try {
+    await prisma.product.delete({
+      where: {
+        id,
+      },
+    })
+
+    revalidatePath("/admin/products")
+  } catch (error) {
+    throw new Error(
+      "Unable to delete product. It may be referenced by other records."
+    )
+  }
 }

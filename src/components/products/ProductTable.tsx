@@ -1,12 +1,22 @@
-import { Eye, Pencil, Trash2 } from "lucide-react"
-import { Prisma } from "@prisma/client"
-import Link from "next/link"
+"use client"
 
-type ProductWithCategory = Prisma.ProductGetPayload<{
-  include: {
-    category: true
-  }
-}>
+import Link from "next/link"
+import { Eye, Pencil, Trash2 } from "lucide-react"
+import { deleteProduct } from "@/actions/product"
+import { Prisma } from "@prisma/client"
+
+type ProductWithCategory = Omit<
+  Prisma.ProductGetPayload<{
+    include: {
+      category: true
+    }
+  }>,
+  "price" | "costPrice" | "discount"
+> & {
+  price: number
+  costPrice: number
+  discount: number
+}
 
 interface ProductTableProps {
   products: ProductWithCategory[]
@@ -15,6 +25,16 @@ interface ProductTableProps {
 export default function ProductTable({
   products,
 }: ProductTableProps) {
+  async function handleDelete(id: number) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    )
+
+    if (!confirmed) return
+
+    await deleteProduct(id)
+  }
+
   return (
     <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
       <table className="w-full">
@@ -34,7 +54,7 @@ export default function ProductTable({
           {products.map((product) => (
             <tr
               key={product.id}
-              className="border-t hover:bg-muted/30 transition-colors"
+              className="border-t transition-colors hover:bg-muted/30"
             >
               <td className="px-4 py-4 text-2xl">🧴</td>
 
@@ -65,12 +85,15 @@ export default function ProductTable({
               </td>
 
               <td className="px-4 py-4 font-semibold">
-                {`$${Number(product.price).toFixed(2)}`}
+                ${Number(product.price).toFixed(2)}
               </td>
 
               <td className="px-4 py-4">
                 <div className="flex justify-center gap-2">
-                  <button className="rounded-md p-2 hover:bg-blue-100">
+                  <button
+                    type="button"
+                    className="rounded-md p-2 hover:bg-blue-100"
+                  >
                     <Eye size={18} />
                   </button>
 
@@ -81,7 +104,11 @@ export default function ProductTable({
                     <Pencil size={18} />
                   </Link>
 
-                  <button className="rounded-md p-2 hover:bg-red-100">
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(product.id)}
+                    className="rounded-md p-2 hover:bg-red-100"
+                  >
                     <Trash2 size={18} />
                   </button>
                 </div>

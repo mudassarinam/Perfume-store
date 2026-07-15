@@ -57,7 +57,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            defaultValue={product?.sku}
+            SKU
           </label>
 
           <input
@@ -65,19 +65,21 @@ export default function ProductForm({
             type="text"
             required
             placeholder="JAN-001"
+            defaultValue={product?.sku}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            defaultValue={product?.barcode ?? ""}
+            Barcode
           </label>
 
           <input
             name="barcode"
             type="text"
             placeholder="Barcode"
+            defaultValue={product?.barcode ?? ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
@@ -149,7 +151,7 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            defaultValue={product?.price.toString()}
+            Selling Price
           </label>
 
           <input
@@ -158,13 +160,16 @@ export default function ProductForm({
             step="0.01"
             required
             placeholder="0.00"
+            defaultValue={product ? product.price.toString() : ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            defaultValue={product?.costPrice.toString()}
+            <label className="mb-2 block text-sm font-medium">
+              Cost Price
+            </label>
           </label>
 
           <input
@@ -173,6 +178,7 @@ export default function ProductForm({
             step="0.01"
             required
             placeholder="0.00"
+            defaultValue={product ? product.costPrice.toString() : ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
@@ -186,7 +192,7 @@ export default function ProductForm({
             name="discount"
             type="number"
             step="0.01"
-            defaultValue={product?.discount.toString() ?? 0}
+            defaultValue={product ? product.discount.toString() : 0}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
@@ -207,13 +213,14 @@ export default function ProductForm({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            defaultValue={product?.volume ?? ""}
+            Volume
           </label>
 
           <input
             name="volume"
             type="text"
             placeholder="100ml"
+            defaultValue={product?.volume ?? ""}
             className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
@@ -221,13 +228,14 @@ export default function ProductForm({
 
       <div className="mt-6">
         <label className="mb-2 block text-sm font-medium">
-          defaultValue={product?.description ?? ""}
+          Description
         </label>
 
         <textarea
           name="description"
           rows={5}
           placeholder="Product description..."
+          defaultValue={product?.description ?? ""}
           className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
