@@ -1,5 +1,8 @@
+"use client"
+
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { Prisma } from "@prisma/client"
+import Link from "next/link"
 
 type ProductWithCategory = Omit<
   Prisma.ProductGetPayload<{
@@ -17,6 +20,7 @@ type ProductWithCategory = Omit<
 interface ProductTableProps {
   products: ProductWithCategory[]
 }
+
 
 export default function ProductTable({
   products,
@@ -76,20 +80,13 @@ export default function ProductTable({
                 {`$${Number(product.price).toFixed(2)}`}
               </td>
 
-              <td className="px-4 py-4">
-                <div className="flex justify-center gap-2">
-                  <button className="rounded-md p-2 hover:bg-blue-100">
-                    <Eye size={18} />
-                  </button>
-
-                  <button className="rounded-md p-2 hover:bg-yellow-100">
-                    <Pencil size={18} />
-                  </button>
-
-                  <button className="rounded-md p-2 hover:bg-red-100">
-                    <Trash2 size={18} />
-                  </button>
-                </div>
+              <td className="px-4 py-4 border border-red-500">
+                <Link
+                  href={`/admin/products/${product.id}`}
+                  className="bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                  VIEW
+                </Link>
               </td>
             </tr>
           ))}

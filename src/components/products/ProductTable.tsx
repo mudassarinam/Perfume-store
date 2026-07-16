@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { deleteProduct } from "@/actions/product"
 import { Prisma } from "@prisma/client"
+import { useRouter } from "next/navigation"
 
 type ProductWithCategory = Omit<
   Prisma.ProductGetPayload<{
@@ -25,6 +26,8 @@ interface ProductTableProps {
 export default function ProductTable({
   products,
 }: ProductTableProps) {
+  const router = useRouter()
+
   async function handleDelete(id: number) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this product?"
@@ -32,7 +35,14 @@ export default function ProductTable({
 
     if (!confirmed) return
 
-    await deleteProduct(id)
+    try {
+      await deleteProduct(id)
+      router.refresh()
+    } catch (error) {
+      window.alert(
+        error instanceof Error ? error.message : "Unable to delete product."
+      )
+    }
   }
 
   return (
@@ -90,12 +100,12 @@ export default function ProductTable({
 
               <td className="px-4 py-4">
                 <div className="flex justify-center gap-2">
-                  <button
-                    type="button"
+                  <Link
+                    href={`/admin/products/${product.id}`}
                     className="rounded-md p-2 hover:bg-blue-100"
                   >
                     <Eye size={18} />
-                  </button>
+                  </Link>
 
                   <Link
                     href={`/admin/products/${product.id}/edit`}
