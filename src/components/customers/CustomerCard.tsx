@@ -1,0 +1,2 @@
+import type { ReactNode } from "react"
+export default function CustomerCard({ title, value, icon, tone = "text-primary" }: { title: string; value: string | number; icon: ReactNode; tone?: string }) { return <div className="rounded-xl border bg-card p-5 shadow-sm"><div className={`mb-3 ${tone}`}>{icon}</div><p className="text-sm text-muted-foreground">{title}</p><p className="mt-1 text-2xl font-bold">{value}</p></div> }
