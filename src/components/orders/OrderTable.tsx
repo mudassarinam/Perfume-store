@@ -4,20 +4,46 @@ import Link from "next/link"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { Prisma } from "@prisma/client"
 
+type PrismaOrder = Prisma.OrderGetPayload<{
+  include: {
+    customer: true
+    orderItems: true
+  }
+}>
+
 type OrderWithRelations = Omit<
-  Prisma.OrderGetPayload<{
-    include: {
-      customer: true
-      orderItems: true
-    }
-  }>,
-  "subtotal" | "discount" | "tax" | "grandTotal" | "paidAmount"
+  PrismaOrder,
+  | "subtotal"
+  | "discount"
+  | "tax"
+  | "grandTotal"
+  | "paidAmount"
+  | "customer"
+  | "orderItems"
 > & {
   subtotal: number
   discount: number
   tax: number
   grandTotal: number
   paidAmount: number
+
+  customer: Omit<
+    PrismaOrder["customer"],
+    "totalSpent"
+  > & {
+    totalSpent: number
+  }
+
+  orderItems: Array<
+    Omit<
+      PrismaOrder["orderItems"][number],
+      "unitPrice" | "discount" | "total"
+    > & {
+      unitPrice: number
+      discount: number
+      total: number
+    }
+  >
 }
 
 interface OrderTableProps {

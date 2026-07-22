@@ -26,13 +26,25 @@ export default async function OrdersPage() {
   })
 
   const serializedOrders = orders.map((order) => ({
-    ...order,
-    subtotal: Number(order.subtotal),
-    discount: Number(order.discount),
-    tax: Number(order.tax),
-    grandTotal: Number(order.grandTotal),
-    paidAmount: Number(order.paidAmount),
-  }))
+  ...order,
+  subtotal: Number(order.subtotal),
+  discount: Number(order.discount),
+  tax: Number(order.tax),
+  grandTotal: Number(order.grandTotal),
+  paidAmount: Number(order.paidAmount),
+
+  customer: {
+    ...order.customer,
+    totalSpent: Number(order.customer.totalSpent),
+  },
+
+  orderItems: order.orderItems.map((item) => ({
+    ...item,
+    unitPrice: Number(item.unitPrice),
+    discount: Number(item.discount),
+    total: Number(item.total),
+  })),
+}))
 
   const pendingOrders = serializedOrders.filter(
     (order) => order.status === "PENDING"

@@ -1,5 +1,5 @@
 "use client"
-
+import { createOrder } from "@/actions/order"
 import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -131,25 +131,46 @@ export default function OrderForm({
     discount +
     tax
 
-  function handleSubmit(
-    e: React.FormEvent
-  ) {
-    e.preventDefault()
+  async function handleSubmit(
+  e: React.FormEvent
+) {
+  e.preventDefault()
 
-    console.log({
-      customerId:
-        selectedCustomer,
-      paymentMethod,
-      paymentStatus,
-      discount,
-      tax,
-      paidAmount,
-      notes,
-      subtotal,
-      grandTotal,
-      items,
+  const orderItems = items
+    .map((item) => {
+      const product = products.find(
+        (p) => p.id === item.productId
+      )
+
+      if (!product) return null
+
+      const unitPrice =
+        product.price - product.discount
+
+      return {
+        productId: item.productId,
+        quantity: item.quantity,
+        unitPrice,
+        discount: product.discount,
+        total:
+          unitPrice * item.quantity,
+      }
     })
-  }
+    .filter(Boolean)
+
+  await createOrder({
+    customerId: selectedCustomer,
+    paymentMethod,
+    paymentStatus,
+    subtotal,
+    discount,
+    tax,
+    grandTotal,
+    paidAmount,
+    notes,
+    items: orderItems,
+  })
+}
 
   return (
     <form
