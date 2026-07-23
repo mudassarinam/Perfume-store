@@ -1,5 +1,5 @@
 "use client"
-
+import DeleteOrderIcon from "./DeleteOrderIcon"
 import Link from "next/link"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import { Prisma } from "@prisma/client"
@@ -154,9 +154,10 @@ export default function OrderTable({
                     <Pencil size={18} />
                   </Link>
 
-                  <button className="rounded-md p-2 hover:bg-red-100">
-                    <Trash2 size={18} />
-                  </button>
+                  <DeleteOrderIcon
+                    orderId={order.id}
+                    status={order.status}
+                  />
                 </div>
               </td>
             </tr>

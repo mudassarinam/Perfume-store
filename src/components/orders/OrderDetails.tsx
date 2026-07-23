@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client"
 import CancelOrderButton from "./CancelOrderButton"
+import DeleteOrderButton from "./DeleteOrderButton"
 
 type OrderWithRelations = Omit<
   Prisma.OrderGetPayload<{
@@ -240,11 +241,16 @@ export default function OrderDetails({
           </div>
         )}
       </div>
-      <div className="flex justify-end">
-        <CancelOrderButton
+      <div className="flex justify-end gap-3">
+        <DeleteOrderButton
           orderId={order.id}
           status={order.status}
         />
+
+        <CancelOrderButton
+           orderId={order.id}
+           status={order.status}
+         />
       </div>
     </div>
   )
