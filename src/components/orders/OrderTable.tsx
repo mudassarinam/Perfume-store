@@ -148,6 +148,14 @@ export default function OrderTable({
                   </Link>
 
                   <Link
+                    href={`/admin/orders/${order.id}/invoice`}
+                    className="rounded-md p-2 hover:bg-green-100"
+                    title="Invoice"
+                  >
+                    🧾
+                  </Link>
+
+                  <Link
                     href={`/admin/orders/${order.id}/edit`}
                     className="rounded-md p-2 hover:bg-yellow-100"
                   >

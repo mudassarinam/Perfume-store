@@ -1,0 +1,30 @@
+@media print {
+
+  body {
+    background: white !important;
+  }
+
+  nav,
+  aside,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  .invoice-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+}

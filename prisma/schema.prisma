@@ -269,6 +269,7 @@ enum OrderStatus {
 }
 
 enum CurrencyCode {
+  PKR
   USD
   EUR
   GBP
@@ -295,3 +296,5 @@ enum InventoryMovementType {
   STOCK_OUT
   ADJUSTMENT
 }
+
+

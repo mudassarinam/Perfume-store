@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client"
 import CancelOrderButton from "./CancelOrderButton"
 import DeleteOrderButton from "./DeleteOrderButton"
+import Link from "next/link"
 
 type OrderWithRelations = Omit<
   Prisma.OrderGetPayload<{
@@ -242,15 +243,24 @@ export default function OrderDetails({
         )}
       </div>
       <div className="flex justify-end gap-3">
+
+        <Link
+          href={`/admin/orders/${order.id}/invoice`}
+          className="rounded-lg border px-5 py-2 hover:bg-muted"
+        >
+          View Invoice
+        </Link>
+
         <DeleteOrderButton
           orderId={order.id}
           status={order.status}
         />
 
         <CancelOrderButton
-           orderId={order.id}
-           status={order.status}
-         />
+          orderId={order.id}
+          status={order.status}
+        />
+
       </div>
     </div>
   )
