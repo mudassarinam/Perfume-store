@@ -5,8 +5,6 @@ interface Props {
     address: string | null
   }
 
-  createdAt: Date
-
   status: string
 
   paymentStatus: string
@@ -16,7 +14,6 @@ interface Props {
 
 export default function InvoiceCustomer({
   customer,
-  createdAt,
   status,
   paymentStatus,
   paymentMethod,
@@ -25,25 +22,24 @@ export default function InvoiceCustomer({
     <div className="mb-10 grid grid-cols-2 gap-8">
 
       <div>
-        <h3 className="mb-3 font-semibold">
+        <h3 className="mb-3 text-lg font-semibold">
           Bill To
         </h3>
 
-        <p>{customer.fullName}</p>
+        <p className="font-medium">
+          {customer.fullName}
+        </p>
 
-        <p>{customer.phone}</p>
+        {customer.phone && (
+          <p>{customer.phone}</p>
+        )}
 
-        <p>{customer.address}</p>
+        {customer.address && (
+          <p>{customer.address}</p>
+        )}
       </div>
 
       <div className="space-y-2 text-right">
-
-        <p>
-          <strong>Date:</strong>{" "}
-          {new Date(
-            createdAt
-          ).toLocaleDateString()}
-        </p>
 
         <p>
           <strong>Status:</strong>{" "}

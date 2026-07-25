@@ -11,16 +11,57 @@ interface Item {
 
 interface Props {
   items: Item[]
+  currency: string
+}
+
+function formatCurrency(
+  amount: number,
+  currency: string
+) {
+  switch (currency) {
+    case "PKR":
+      return `Rs. ${amount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+
+    case "USD":
+      return `$${amount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+
+    case "EUR":
+      return `€${amount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+
+    case "GBP":
+      return `£${amount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+
+    case "AED":
+      return `AED ${amount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+
+    default:
+      return amount.toFixed(2)
+  }
 }
 
 export default function InvoiceItems({
   items,
+  currency,
 }: Props) {
   return (
     <table className="mb-10 w-full border">
 
       <thead className="bg-muted">
-
         <tr>
           <th className="border p-3 text-left">
             Product
@@ -42,12 +83,11 @@ export default function InvoiceItems({
             Total
           </th>
         </tr>
-
       </thead>
 
       <tbody>
 
-        {items.map(item => (
+        {items.map((item) => (
           <tr key={item.id}>
 
             <td className="border p-3">
@@ -59,15 +99,15 @@ export default function InvoiceItems({
             </td>
 
             <td className="border p-3 text-center">
-              ${Number(item.unitPrice).toFixed(2)}
+              {formatCurrency(item.unitPrice, currency)}
             </td>
 
             <td className="border p-3 text-center">
-              ${Number(item.discount).toFixed(2)}
+              {formatCurrency(item.discount, currency)}
             </td>
 
             <td className="border p-3 text-center">
-              ${Number(item.total).toFixed(2)}
+              {formatCurrency(item.total, currency)}
             </td>
 
           </tr>
